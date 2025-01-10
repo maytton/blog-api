@@ -44,7 +44,7 @@ public class Post {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne
+    @ManyToMany
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
@@ -77,10 +77,10 @@ public class Post {
         this.updatedAt = now;
     }
 
-    @PrePersist
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
+//    @PrePersist
+//    protected void onUpdate() {
+//        this.updatedAt = LocalDateTime.now();
+//    }
 
 
 }
