@@ -1,5 +1,6 @@
 package com.dev.blog.config;
 
+import com.dev.blog.domain.entities.User;
 import com.dev.blog.repositories.UserRepository;
 import com.dev.blog.security.BlogUserDetailsService;
 import com.dev.blog.security.JwtAuthenticationFilter;
@@ -26,8 +27,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository){
-        return new BlogUserDetailsService(userRepository);
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        BlogUserDetailsService blogUserDetailsService = new BlogUserDetailsService(userRepository);
+
+        String email = "user@test.com";
+        userRepository.findByEmail(email).orElseGet(() -> {
+            User newUser = User.builder()
+                    .name("Teste User")
+                    .email(email)
+                    .password(passwordEncoder().encode("password"))
+                    .build();
+            return userRepository.save(newUser);
+        });
+
+        return blogUserDetailsService;
     }
 
 
@@ -35,7 +48,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/tags/**").permitAll()
