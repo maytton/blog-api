@@ -10,6 +10,7 @@ import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
@@ -18,7 +19,7 @@ public interface TagMapper {
     TagResponse toTagResponse(Tag tag);
 
     @Named("calculatePostCount")
-    default Integer calculatePostCount(List<Post> posts) {
+    default Integer calculatePostCount(Set<Post> posts) {
         if (posts == null) {
             return 0;
         }
