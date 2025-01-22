@@ -1,14 +1,14 @@
 package com.dev.blog.controllers;
 
+import com.dev.blog.domain.dtos.CreateTagRequest;
 import com.dev.blog.domain.dtos.TagResponse;
 import com.dev.blog.domain.entities.Tag;
 import com.dev.blog.mappers.TagMapper;
 import com.dev.blog.services.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,15 @@ public class TagController {
         List<Tag> tags = tagService.getTags();
         List<TagResponse> tagResponses = tags.stream().map(tagMapper::toTagResponse).toList();
         return ResponseEntity.ok(tagResponses);
+    }
+
+    @PostMapping
+    public ResponseEntity<List<TagResponse>> createTags(@RequestBody CreateTagRequest createTagRequest) {
+        List<Tag> savedTags = tagService.createTags(createTagRequest.getNames());
+        List<TagResponse> createdTagResponses = savedTags.stream().map(tagMapper::toTagResponse).toList();
+        return new ResponseEntity<>(
+                createdTagResponses,
+                HttpStatus.CREATED
+        );
     }
 }
