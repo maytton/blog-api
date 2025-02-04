@@ -1,6 +1,7 @@
 package com.dev.blog.controllers;
 
 import com.dev.blog.domain.CreatePostRequest;
+import com.dev.blog.domain.UpdatePostRequest;
 import com.dev.blog.domain.dtos.CreatePostRequestDTO;
 import com.dev.blog.domain.dtos.PostDTO;
 import com.dev.blog.domain.dtos.UpdatePostRequestDTO;
@@ -61,7 +62,11 @@ public class PostController {
     public ResponseEntity<PostDTO> updatePost(
             @PathVariable UUID id,
             @Valid @RequestBody UpdatePostRequestDTO updatePostRequestDTO
-    ){
+    ) {
+        UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDTO);
+        Post updatePost = postService.updatePost(id, updatePostRequest);
+        PostDTO updatePostDTO = postMapper.toDTO(updatePost);
+        return ResponseEntity.ok(updatePostDTO);
 
     }
 }
