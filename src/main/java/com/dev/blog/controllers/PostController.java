@@ -3,11 +3,13 @@ package com.dev.blog.controllers;
 import com.dev.blog.domain.CreatePostRequest;
 import com.dev.blog.domain.dtos.CreatePostRequestDTO;
 import com.dev.blog.domain.dtos.PostDTO;
+import com.dev.blog.domain.dtos.UpdatePostRequestDTO;
 import com.dev.blog.domain.entities.Post;
 import com.dev.blog.domain.entities.User;
 import com.dev.blog.mappers.PostMapper;
 import com.dev.blog.services.PostService;
 import com.dev.blog.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +55,13 @@ public class PostController {
         Post createdPost = postService.createPost(loggedUser, createPostRequest);
         PostDTO createdPostDTO = postMapper.toDTO(createdPost);
         return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PostDTO> updatePost(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdatePostRequestDTO updatePostRequestDTO
+    ){
+
     }
 }
