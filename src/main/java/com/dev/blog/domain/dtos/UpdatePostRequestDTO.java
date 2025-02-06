@@ -38,5 +38,5 @@ public class UpdatePostRequestDTO {
     @Size(max = 1, message = "Maximum {max} tags allowed")
     private Set<UUID> tagsIds = new HashSet<>();
 
-    private PostStatus postStatus;
+    private PostStatus status;
 }
