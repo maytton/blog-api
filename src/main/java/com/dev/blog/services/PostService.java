@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface PostService {
 
+    Post getPost(UUID id);
     List<Post> getAllPosts(UUID categoryId, UUID tagId);
     List<Post> getDrafts(User user);
     Post createPost(User user, CreatePostRequest createPostRequest);
