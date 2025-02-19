@@ -84,4 +84,11 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    public ResponseEntity<PostDTO> publishPost(@PathVariable UUID id) {
+        Post publishedPost = postService.publishPost(id);
+        PostDTO publishedPostDTO = postMapper.toDTO(publishedPost);
+        return ResponseEntity.ok(publishedPostDTO);
+    }
 }
